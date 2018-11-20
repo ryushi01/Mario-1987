@@ -2,7 +2,8 @@ import pygame
 
 pygame.init()
 
-#----CONSTANTES----#
+
+#---CONSTANTES---#
 
 NOIR = (0, 0, 0)
 BLEU_ACIER = (70, 130, 180)
