@@ -1,7 +1,10 @@
 import pygame
 from pygame.locals import *
 import random
+import time
 pygame.init()
+
+DEBUG_MODE = True
 
 #---CONSTANTES---#
 NOIR = (0, 0, 0)
@@ -111,6 +114,10 @@ map= [    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
           ]
 
 #---FONCTIONS---#
+def diagnostics():
+    if DEBUG_MODE == True:
+        print("ennemi x :", ennemi.x, "ennemi y :", ennemi.y)
+        
 def traite_entrees():
     global mario_x, mario_y, mario_vx, mario_vy, mario_enSaut, fini
     for event in pygame.event.get():
@@ -233,4 +240,5 @@ while not fini:
     fenetre.blit(ennemi.shape, (ennemi.x, ennemi.y))
     horloge.tick(30)
     pygame.display.flip()
+    diagnostics()   ###TEST###
 pygame.quit()
