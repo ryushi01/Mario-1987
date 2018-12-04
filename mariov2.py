@@ -13,7 +13,7 @@ FENETRE_LARGEUR = 800
 FENETRE_HAUTEUR = 600
 FENETRE_TAILLE = [FENETRE_LARGEUR, FENETRE_HAUTEUR]
 fenetre = pygame.display.set_mode(FENETRE_TAILLE)
-
+background = pygame.image.load('images/background.png')
 GRAVITE = 4
 #---AUTRES VARIABLES---#
 fini = False
@@ -55,9 +55,9 @@ map= [    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 
           [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 
-          [0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0],
 
-          [1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1],
+          [1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1],
 
           [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 
@@ -187,7 +187,7 @@ def mise_a_jour_position():
 #--- BOUCLE PRINCIPALE ---#
 while not fini:
     traite_entrees()
-    fenetre.fill(NOIR)
+    fenetre.blit(background, (0, 0))
     dessiner_map(fenetre, map)
     mise_a_jour_position()
     effet_pacman()
