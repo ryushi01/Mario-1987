@@ -30,6 +30,7 @@ class entite_mario():
         self.compteur_marche = 0
         self.gravite_on = True
         self.compteur_gravite = 1.05
+        self.position = [self.x, self.y]
         self.marcheDroite_1 = pygame.image.load('images/mario_marche_d2.png')
         self.marcheDroite_1 = pygame.transform.scale(self.marcheDroite_1, (self.largeur, self.hauteur))
         self.marcheDroite_2 = pygame.image.load('images/mario_marche_d1.png')
@@ -71,16 +72,19 @@ class entite_mario():
             self.compteur_marche += 1
         elif not self.gauche and not self.droite and self.en_saut:
             fenetre.blit(self.sautDroite, (self.x, self.y))
+
         else:
             fenetre.blit(self.resteDroite, (self.x, self.y))
+        self.rect = pygame.Rect((self.x, self.y), (self.hauteur, self.largeur))
+
     def update(self):
-        self.position = [self.x, self.y]
-        self.rect = pygame.Rect(self.position, (self.largeur, self.hauteur))
         self.x = effet_pacman(self.x, self.largeur)
     def gravite(self):
         compteur_gravite = 1.05
         if self.gravite_on:
             self.y *= compteur_gravite
+
+
 
 class entite_plateforme():
     def __init__(self, x, y, largeur, hauteur, couleur):
@@ -89,24 +93,36 @@ class entite_plateforme():
         self.x = x
         self.y = y
         self.couleur = couleur
+        self.position = [self.x, self.y]
     def dessin(self):
         pygame.draw.rect(fenetre, self.couleur, ((self.x, self.y), (self.largeur, self.hauteur)))
-    def update(self):
-        self.position = [self.x, self.y]
-        self.rect = pygame.Rect(self.position, (self.largeur, self.hauteur))
+        self.rect = pygame.Rect((self.x, self.y), (self.largeur, self.hauteur))
 
 #---FONCTIONS---#
 def acteurs():
-    global mario, plateforme
-    mario = entite_mario(10, FENETRE_HAUTEUR * 1 / 10, 30, 34)
-    plateforme = entite_plateforme(0, FENETRE_HAUTEUR*2/5, FENETRE_LARGEUR*2/5, 15, ROUGE)
+    global mario, sol, plateforme1, plateforme2
+    mario = entite_mario(30, FENETRE_HAUTEUR * 5/12, 30, 34)
+    sol = entite_plateforme(0, FENETRE_HAUTEUR*10/12, FENETRE_LARGEUR, FENETRE_HAUTEUR*2/12, ROUGE)
+    plateforme1 = entite_plateforme(-40, FENETRE_HAUTEUR*5/12, FENETRE_LARGEUR*5/12, 15, ROUGE)
+    plateforme2 = entite_plateforme(FENETRE_LARGEUR-5/12*FENETRE_LARGEUR+40, FENETRE_HAUTEUR*5/12, FENETRE_LARGEUR*5/12, 15, ROUGE)
+
+def systeme_collision():
+    if mario.rect.colliderect(sol.rect) or mario.rect.colliderect(plateforme1.rect) or mario.rect.colliderect(plateforme2.rect):
+        mario.gravite_on = False
+    elif mario.en_saut:
+        mario.gravite_on = False
+    else: mario.gravite_on = True
+
+
 
 def affiche():
     mario.dessin(fenetre)
     mario.update()
     mario.gravite()
-    plateforme.dessin()
-    plateforme.update()
+    sol.dessin()
+    plateforme1.dessin()
+    plateforme2.dessin()
+    systeme_collision()
 
 def effet_pacman(position_entite_actuellex, entite_largeur):
     global FENETRE_LARGEUR
@@ -119,11 +135,6 @@ def effet_pacman(position_entite_actuellex, entite_largeur):
     else:
         return position_entite_actuellex
 
-def systeme_collisions():
-    if mario.rect.colliderect(plateforme.rect):
-        mario.gravite_on = False
-    else:
-        mario.gravite_on = True
 
 def traite_entrees():
     global touche, fini
@@ -161,9 +172,6 @@ acteurs()
 while not fini:
     traite_entrees()
     fenetre.fill(NOIR)
-    #---A TROUBLESHOOTER---#
-    #systeme_collisions()
-    #----------------------#
     affiche()
     pygame.display.flip()
     horloge.tick(30)

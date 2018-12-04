@@ -1,11 +1,8 @@
 import pygame
-
 from pygame.locals import *
-
 pygame.init()
 
 #---CONSTANTES---#
-
 NOIR = (0, 0, 0)
 BLEU_ACIER = (70, 130, 180)
 BRUN = (88, 41, 0)
@@ -18,39 +15,24 @@ FENETRE_TAILLE = [FENETRE_LARGEUR, FENETRE_HAUTEUR]
 fenetre = pygame.display.set_mode(FENETRE_TAILLE)
 
 GRAVITE = 4
-
-
 #---AUTRES VARIABLES---#
-
 fini = False
-
-enSaut = False
-
 horloge = pygame.time.Clock()
-
 pygame.display.set_caption('MARIO')
 
 mario = pygame.Surface((25, 25))
-
 mario.fill(ROUGE)
-
-ennemi = pygame.Surface((25, 25))
-
-ennemi.fill(VERT)
-
+enSaut = False
 x, y = 25, 80
-
 vx, vy = 0, 0
 
+#---CHARGEMENT IMAGES---#
 plateforme = pygame.image.load('images/platform.png')
 plateforme = pygame.transform.scale(plateforme, (25, 25))
-
-
 sol = pygame.image.load('images/brick.png')
 sol = pygame.transform.scale(sol, (25, 25))
 
-
-
+#---CONFIG MAP---#
 map= [    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 
           [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
@@ -101,11 +83,7 @@ map= [    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 
           ]
 
-
-
-
 #---FONCTIONS---#
-
 def traite_entrees():
     global x, y, vx, vy, enSaut, fini
     for event in pygame.event.get():
@@ -117,15 +95,8 @@ def traite_entrees():
                 enSaut = True
         elif vy == 0:
             enSaut = False
-
-
-
-
     keys_pressed = pygame.key.get_pressed()
-
     vx = (keys_pressed[K_RIGHT] - keys_pressed[K_LEFT]) * 5
-
-
 
 def dessiner_map(fenetre, map):
     for j, ligne in enumerate(map):
@@ -134,7 +105,6 @@ def dessiner_map(fenetre, map):
                 fenetre.blit(plateforme, (i*25, j*25))
             elif case == 2:
                 fenetre.blit(sol, (i*25, j*25))
-
 
 def from_coord_to_grid(pos):
     x, y = pos
@@ -209,35 +179,19 @@ def effet_pacman():
 def mise_a_jour_position():
     global x, y , vx, vy, GRAVITE, map
     ancien_x, ancien_y = x, y
-
     vy += GRAVITE
-
     x += vx
-
     y += vy
-
     x, y, vx, vy = bloque_sur_collision(map, (ancien_x, ancien_y), (x, y), vx, vy)
 
-
-
 #--- BOUCLE PRINCIPALE ---#
-
 while not fini:
-
     traite_entrees()
-
     fenetre.fill(NOIR)
-
     dessiner_map(fenetre, map)
-
     mise_a_jour_position()
-
     effet_pacman()
-
     fenetre.blit(mario, (x, y))
-
     horloge.tick(30)
-
     pygame.display.flip()
-
 pygame.quit()
