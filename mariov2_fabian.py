@@ -1,9 +1,9 @@
 import pygame
 from pygame.locals import *
+import random
 pygame.init()
 
 #---CONSTANTES---#
-
 NOIR = (0, 0, 0)
 BLEU_ACIER = (70, 130, 180)
 BRUN = (88, 41, 0)
@@ -16,28 +16,50 @@ FENETRE_TAILLE = [FENETRE_LARGEUR, FENETRE_HAUTEUR]
 fenetre = pygame.display.set_mode(FENETRE_TAILLE)
 background = pygame.image.load('images/background.png')
 GRAVITE = 4
-
 #---AUTRES VARIABLES---#
-
 fini = False
 horloge = pygame.time.Clock()
 pygame.display.set_caption('MARIO')
 
-mario = pygame.Surface((25, 25))
-mario.fill(ROUGE)
-enSaut = False
-x, y = 25, 80
-vx, vy = 0, 0
-
 #---CHARGEMENT IMAGES---#
 plateforme = pygame.image.load('images/platform.png')
 plateforme = pygame.transform.scale(plateforme, (25, 25))
-
 sol = pygame.image.load('images/brick.png')
 sol = pygame.transform.scale(sol, (25, 25))
 
-#---CONFIG MAP---#
+###DEFINITION ENTITES###
+class entite():
+    def __init__(self, pos_x, pos_y):
+        self.x = pos_x
+        self.y = pos_y
+        self.vx = 0
+        self.vy = 0
+        self.enSaut = False
+        self.pos = (pos_x, pos_y)
+        ###MAJ POSITION###
+        self.ancien_x, self.ancien_y = self.x, self.y
+        self.vy += GRAVITE
+        self.x += self.vx
+        self.y += self.vy
+        self.x, self.y, self.vx, self.vy = bloque_sur_collision(map, (self.ancien_x, self.ancien_y), (self.x, self.y), self.vx, self.vy)
+        ###from_coord_to_grid###
+        self.x, self.y = self.pos
+        self.i = max(0, int(self.x // 25))
+        self.j = max(0, int(self.y // 25))
+        self.pos = (self.i, self.j)
+    def mise_a_jour_position_ennemi(self):
+        self.ancien_x, self.ancien_y = self.x, self.y
+        self.vy += GRAVITE
+        self.x += self.vx
+        self.y += self.vy
+        self.x, self.y, self.vx, self.vy = bloque_sur_collision(map, (self.ancien_x, self.ancien_y), (self.x, self.y), self.vx, self.vy)
+        self.vx = 2
+        if self.x <= 0:
+            self.x = FENETRE_LARGEUR - 35
+        elif self.x >= FENETRE_LARGEUR - 30:
+            self.x = 5
 
+#---CONFIG MAP---#
 map= [    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 
           [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
@@ -89,20 +111,22 @@ map= [    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
           ]
 
 #---FONCTIONS---#
-
 def traite_entrees():
-    global x, y, vx, vy, enSaut, fini
+    global mario_x, mario_y, mario_vx, mario_vy, mario_enSaut, fini
     for event in pygame.event.get():
         if event.type == QUIT:
             fini = True
         elif event.type == KEYDOWN:
-            if event.key == K_SPACE and enSaut == False:
-                vy = -35
-                enSaut = True
-        elif vy == 0:
-            enSaut = False
+            if event.key == K_SPACE and mario_enSaut == False:
+                mario_vy = -35
+                mario_enSaut = True
+            elif event.key == pygame.K_p:
+                ennemi = generer_ennemi()
+                ennemi_list.append(ennemi)
+        elif mario_vy == 0:
+            mario_enSaut = False
     keys_pressed = pygame.key.get_pressed()
-    vx = (keys_pressed[K_RIGHT] - keys_pressed[K_LEFT]) * 5
+    mario_vx = (keys_pressed[K_RIGHT] - keys_pressed[K_LEFT]) * 5
 
 def dessiner_map(fenetre, map):
     for j, ligne in enumerate(map):
@@ -112,10 +136,10 @@ def dessiner_map(fenetre, map):
             elif case == 2:
                 fenetre.blit(sol, (i*25, j*25))
 
-def from_coord_to_grid(pos):
-    x, y = pos
-    i = max(0, int(x // 25))
-    j = max(0, int(y // 25))
+def from_coord_to_grid(mario_pos):
+    mario_x, mario_y = mario_pos
+    i = max(0, int(mario_x // 25))
+    j = max(0, int(mario_y // 25))
     return i, j
 
 def get_neighbour_blocks(map, i_start, j_start):
@@ -128,7 +152,7 @@ def get_neighbour_blocks(map, i_start, j_start):
                 blocks.append(pygame.Rect((topleft), (25, 25)))
     return blocks
 
-def bloque_sur_collision(map, ancien_pos, nouv_pos, vx, vy):
+def bloque_sur_collision(map, ancien_pos, nouv_pos, mario_vx, mario_vy):
     ancien_rect = pygame.Rect(ancien_pos, (25, 25))
     nouv_rect = pygame.Rect(nouv_pos, (25, 25))
     i, j = from_coord_to_grid(nouv_pos)
@@ -140,10 +164,10 @@ def bloque_sur_collision(map, ancien_pos, nouv_pos, vx, vy):
         dx_correction, dy_correction = compute_penetration(block, ancien_rect, nouv_rect)
         if dx_correction == 0.0:
             nouv_rect.top += dy_correction
-            vy = 0.0
+            mario_vy = 0.0
         elif dy_correction == 0.0:
             nouv_rect.left += dx_correction
-            vx = 0.0
+            mario_vx = 0.0
         else:
             collide_later.append(block)
     for block in collide_later:
@@ -156,12 +180,12 @@ def bloque_sur_collision(map, ancien_pos, nouv_pos, vx, vy):
             dx_correction = 0.0
         if dy_correction != 0.0:
             nouv_rect.top += dy_correction
-            vy = 0.0
+            mario_vy = 0.0
         elif dx_correction != 0.0:
             nouv_rect.left += dx_correction
-            vx = 0.0
-    x, y = nouv_rect.topleft
-    return x, y, vx, vy
+            mario_vx = 0.0
+    mario_x, mario_y = nouv_rect.topleft
+    return mario_x, mario_y, mario_vx, mario_vy
 
 def compute_penetration(block, ancien_rect, nouv_rect):
     dx_correction = dy_correction = 0.0
@@ -175,30 +199,38 @@ def compute_penetration(block, ancien_rect, nouv_rect):
         dx_correction = block.right - nouv_rect.left
     return dx_correction, dy_correction
 
-def effet_pacman():
-    global x
-    if x == 0:
-        x = FENETRE_LARGEUR - 35
-    elif x == FENETRE_LARGEUR - 30:
-        x = 5
+def mise_a_jour_position_mario():
+    global mario_x, mario_y, mario_vx, mario_vy, GRAVITE, map
+    ancien_x, ancien_y = mario_x, mario_y
+    mario_vy += GRAVITE
+    mario_x += mario_vx
+    mario_y += mario_vy
+    mario_x, mario_y, mario_vx, mario_vy = bloque_sur_collision(map, (ancien_x, ancien_y), (mario_x, mario_y), mario_vx, mario_vy)
+    if mario_x == 0:
+        mario_x = FENETRE_LARGEUR - 35
+    elif mario_x == FENETRE_LARGEUR - 30:
+        mario_x = 5
 
-def mise_a_jour_position():
-    global x, y , vx, vy, GRAVITE, map
-    ancien_x, ancien_y = x, y
-    vy += GRAVITE
-    x += vx
-    y += vy
-    x, y, vx, vy = bloque_sur_collision(map, (ancien_x, ancien_y), (x, y), vx, vy)
 
 #--- BOUCLE PRINCIPALE ---#
+mario = pygame.Surface((25, 25))
+mario.fill(ROUGE)
+mario_enSaut = False
+mario_x, mario_y = FENETRE_LARGEUR//2, FENETRE_HAUTEUR - 100
+mario_vx, mario_vy = 0, 0
+
+ennemi = entite(600, 10)
+ennemi.shape = pygame.Surface((25, 25))
+ennemi.shape.fill(VERT)
 
 while not fini:
     traite_entrees()
     fenetre.blit(background, (0, 0))
     dessiner_map(fenetre, map)
-    mise_a_jour_position()
-    effet_pacman()
-    fenetre.blit(mario, (x, y))
+    mise_a_jour_position_mario()
+    ennemi.mise_a_jour_position_ennemi()
+    fenetre.blit(mario, (mario_x, mario_y))
+    fenetre.blit(ennemi.shape, (ennemi.x, ennemi.y))
     horloge.tick(30)
     pygame.display.flip()
 pygame.quit()
