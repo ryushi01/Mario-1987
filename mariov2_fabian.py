@@ -27,8 +27,15 @@ pygame.display.set_caption('MARIO')
 #---CHARGEMENT IMAGES---#
 plateforme = pygame.image.load('images/platform.png')
 plateforme = pygame.transform.scale(plateforme, (25, 25))
+
 sol = pygame.image.load('images/brick.png')
 sol = pygame.transform.scale(sol, (25, 25))
+
+mario_image = pygame.Surface((25, 25))
+mario_image.fill(ROUGE)
+
+ennemi_image = pygame.Surface((25, 25))
+ennemi_image.fill(VERT)
 
 ###DEFINITION ENTITES###
 class entite():
@@ -50,18 +57,18 @@ class entite():
         self.i = max(0, int(self.x // 25))
         self.j = max(0, int(self.y // 25))
         self.pos = (self.i, self.j)
+        self.vx_random = random.randint(1, 5)
     def mise_a_jour_position_ennemi(self):
         self.ancien_x, self.ancien_y = self.x, self.y
         self.vy += GRAVITE
         self.x += self.vx
         self.y += self.vy
         self.x, self.y, self.vx, self.vy = bloque_sur_collision(map, (self.ancien_x, self.ancien_y), (self.x, self.y), self.vx, self.vy)
-        self.vx = 2
+        self.vx = self.vx_random
         if self.x <= 0:
             self.x = FENETRE_LARGEUR - 35
         elif self.x >= FENETRE_LARGEUR - 30:
             self.x = 5
-
 #---CONFIG MAP---#
 map= [    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 
@@ -116,7 +123,9 @@ map= [    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 #---FONCTIONS---#
 def diagnostics():
     if DEBUG_MODE == True:
-        print("ennemi x :", ennemi.x, "ennemi y :", ennemi.y)
+        print("ennemi 1 x :", ennemi.x, "ennemi 1 y :", ennemi.y)
+        print("ennemi 2 x :", ennemi2.x, "ennemi 2 y :", ennemi2.y)
+        print("mario x :", mario_x, "mario y :", mario_y)
 
 def traite_entrees():
     global mario_x, mario_y, mario_vx, mario_vy, mario_enSaut, fini
@@ -127,9 +136,6 @@ def traite_entrees():
             if event.key == K_SPACE and mario_enSaut == False:
                 mario_vy = -35
                 mario_enSaut = True
-            elif event.key == pygame.K_p:
-                ennemi = generer_ennemi()
-                ennemi_list.append(ennemi)
         elif mario_vy == 0:
             mario_enSaut = False
     keys_pressed = pygame.key.get_pressed()
@@ -220,15 +226,14 @@ def mise_a_jour_position_mario():
 
 
 #--- BOUCLE PRINCIPALE ---#
-mario = pygame.Surface((25, 25))
-mario.fill(ROUGE)
+
+
 mario_enSaut = False
 mario_x, mario_y = FENETRE_LARGEUR//2, FENETRE_HAUTEUR - 100
 mario_vx, mario_vy = 0, 0
 
 ennemi = entite(600, 10)
-ennemi.shape = pygame.Surface((25, 25))
-ennemi.shape.fill(VERT)
+ennemi2 = entite(300, 20)
 
 while not fini:
     traite_entrees()
@@ -236,8 +241,10 @@ while not fini:
     dessiner_map(fenetre, map)
     mise_a_jour_position_mario()
     ennemi.mise_a_jour_position_ennemi()
-    fenetre.blit(mario, (mario_x, mario_y))
-    fenetre.blit(ennemi.shape, (ennemi.x, ennemi.y))
+    ennemi2.mise_a_jour_position_ennemi()
+    fenetre.blit(mario_image, (mario_x, mario_y))
+    fenetre.blit(ennemi_image, (ennemi.x, ennemi.y))
+    fenetre.blit(ennemi_image, (ennemi2.x, ennemi2.y))
     horloge.tick(30)
     pygame.display.flip()
     diagnostics()   ###TEST###
