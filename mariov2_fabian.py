@@ -117,7 +117,7 @@ map= [    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 def diagnostics():
     if DEBUG_MODE == True:
         print("ennemi x :", ennemi.x, "ennemi y :", ennemi.y)
-        
+
 def traite_entrees():
     global mario_x, mario_y, mario_vx, mario_vy, mario_enSaut, fini
     for event in pygame.event.get():
