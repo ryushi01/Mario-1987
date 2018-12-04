@@ -4,7 +4,7 @@ import random
 import time
 pygame.init()
 
-DEBUG_MODE = True
+DEBUG_MODE = False
 
 #---CONSTANTES---#
 NOIR = (0, 0, 0)
@@ -57,7 +57,9 @@ class entite():
         self.i = max(0, int(self.x // 25))
         self.j = max(0, int(self.y // 25))
         self.pos = (self.i, self.j)
-        self.vx_random = random.randint(1, 5)
+        self.vx_random = random.randint(-2, 2)
+        if self.vx_random == 0:
+            self.vx_random = 1
     def mise_a_jour_position_ennemi(self):
         self.ancien_x, self.ancien_y = self.x, self.y
         self.vy += GRAVITE
@@ -232,19 +234,62 @@ mario_enSaut = False
 mario_x, mario_y = FENETRE_LARGEUR//2, FENETRE_HAUTEUR - 100
 mario_vx, mario_vy = 0, 0
 
-ennemi = entite(600, 10)
-ennemi2 = entite(300, 20)
+
+ennemi1 = entite(random.randint(1, FENETRE_LARGEUR), 10)
+ennemi2 = entite(random.randint(1, FENETRE_LARGEUR), 10)
+ennemi3 = entite(random.randint(1, FENETRE_LARGEUR), 10)
+ennemi4 = entite(random.randint(1, FENETRE_LARGEUR), 10)
+ennemi5 = entite(random.randint(1, FENETRE_LARGEUR), 10)
+ennemi6 = entite(random.randint(1, FENETRE_LARGEUR), 10)
+ennemi7 = entite(random.randint(1, FENETRE_LARGEUR), 10)
+ennemi8 = entite(random.randint(1, FENETRE_LARGEUR), 10)
+ennemi9 = entite(random.randint(1, FENETRE_LARGEUR), 10)
+ennemi10 = entite(random.randint(1, FENETRE_LARGEUR), 10)
+ennemi11 = entite(random.randint(1, FENETRE_LARGEUR), 10)
+ennemi12 = entite(random.randint(1, FENETRE_LARGEUR), 10)
+ennemi13 = entite(random.randint(1, FENETRE_LARGEUR), 10)
+ennemi14 = entite(random.randint(1, FENETRE_LARGEUR), 10)
+ennemi15 = entite(random.randint(1, FENETRE_LARGEUR), 10)
 
 while not fini:
     traite_entrees()
     fenetre.blit(background, (0, 0))
     dessiner_map(fenetre, map)
     mise_a_jour_position_mario()
-    ennemi.mise_a_jour_position_ennemi()
-    ennemi2.mise_a_jour_position_ennemi()
     fenetre.blit(mario_image, (mario_x, mario_y))
-    fenetre.blit(ennemi_image, (ennemi.x, ennemi.y))
+
+    ennemi1.mise_a_jour_position_ennemi()
+    ennemi2.mise_a_jour_position_ennemi()
+    ennemi3.mise_a_jour_position_ennemi()
+    ennemi4.mise_a_jour_position_ennemi()
+    ennemi5.mise_a_jour_position_ennemi()
+    ennemi6.mise_a_jour_position_ennemi()
+    ennemi7.mise_a_jour_position_ennemi()
+    ennemi8.mise_a_jour_position_ennemi()
+    ennemi9.mise_a_jour_position_ennemi()
+    ennemi10.mise_a_jour_position_ennemi()
+    ennemi11.mise_a_jour_position_ennemi()
+    ennemi12.mise_a_jour_position_ennemi()
+    ennemi13.mise_a_jour_position_ennemi()
+    ennemi14.mise_a_jour_position_ennemi()
+    ennemi15.mise_a_jour_position_ennemi()
+
+    fenetre.blit(ennemi_image, (ennemi1.x, ennemi1.y))
     fenetre.blit(ennemi_image, (ennemi2.x, ennemi2.y))
+    fenetre.blit(ennemi_image, (ennemi3.x, ennemi3.y))
+    fenetre.blit(ennemi_image, (ennemi4.x, ennemi4.y))
+    fenetre.blit(ennemi_image, (ennemi5.x, ennemi5.y))
+    fenetre.blit(ennemi_image, (ennemi6.x, ennemi6.y))
+    fenetre.blit(ennemi_image, (ennemi7.x, ennemi7.y))
+    fenetre.blit(ennemi_image, (ennemi8.x, ennemi8.y))
+    fenetre.blit(ennemi_image, (ennemi9.x, ennemi9.y))
+    fenetre.blit(ennemi_image, (ennemi10.x, ennemi10.y))
+    fenetre.blit(ennemi_image, (ennemi11.x, ennemi11.y))
+    fenetre.blit(ennemi_image, (ennemi12.x, ennemi12.y))
+    fenetre.blit(ennemi_image, (ennemi13.x, ennemi13.y))
+    fenetre.blit(ennemi_image, (ennemi14.x, ennemi14.y))
+    fenetre.blit(ennemi_image, (ennemi15.x, ennemi15.y))
+
     horloge.tick(30)
     pygame.display.flip()
     diagnostics()   ###TEST###
