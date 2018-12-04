@@ -10,6 +10,7 @@ NOIR = (0, 0, 0)
 BLEU_ACIER = (70, 130, 180)
 BRUN = (88, 41, 0)
 ROUGE = (255, 0, 0)
+VERT =(0, 255, 0)
 
 FENETRE_LARGEUR = 800
 FENETRE_HAUTEUR = 600
@@ -33,17 +34,22 @@ mario = pygame.Surface((25, 25))
 
 mario.fill(ROUGE)
 
+ennemi = pygame.Surface((25, 25))
+
+ennemi.fill(VERT)
+
 x, y = 25, 80
 
 vx, vy = 0, 0
 
-mur = pygame.Surface((25, 25))
+plateforme = pygame.image.load('images/platform.png')
+plateforme = pygame.transform.scale(plateforme, (25, 25))
 
-mur.fill(BLEU_ACIER)
 
-sol = pygame.Surface((25, 25))
+sol = pygame.image.load('images/brick.png')
+sol = pygame.transform.scale(sol, (25, 25))
 
-sol.fill(BRUN)
+
 
 map= [    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 
@@ -125,7 +131,7 @@ def dessiner_map(fenetre, map):
     for j, ligne in enumerate(map):
         for i, case in enumerate(ligne):
             if case == 1:
-                fenetre.blit(mur, (i*25, j*25))
+                fenetre.blit(plateforme, (i*25, j*25))
             elif case == 2:
                 fenetre.blit(sol, (i*25, j*25))
 
@@ -199,7 +205,7 @@ def effet_pacman():
         x = FENETRE_LARGEUR - 35
     elif x == FENETRE_LARGEUR - 30:
         x = 5
-        
+
 def mise_a_jour_position():
     global x, y , vx, vy, GRAVITE, map
     ancien_x, ancien_y = x, y
