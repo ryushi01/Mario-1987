@@ -1,7 +1,7 @@
 import pygame
 from pygame.locals import *
 import random
-import time
+
 pygame.init()
 
 DEBUG_MODE = False
@@ -12,6 +12,7 @@ BLEU_ACIER = (70, 130, 180)
 BRUN = (88, 41, 0)
 ROUGE = (255, 0, 0)
 VERT =(0, 255, 0)
+ALEATOIRE = (((random.randint(0, 255)), (random.randint(0, 255)), (random.randint(0, 255))))
 
 FENETRE_LARGEUR = 800
 FENETRE_HAUTEUR = 600
@@ -57,7 +58,7 @@ class entite():
         self.i = max(0, int(self.x // 25))
         self.j = max(0, int(self.y // 25))
         self.pos = (self.i, self.j)
-        self.vx_random = random.randint(-2, 2)
+        self.vx_random = random.randint(-3, 3)
         if self.vx_random == 0:
             self.vx_random = 1
     def mise_a_jour_position_ennemi(self):
@@ -69,58 +70,34 @@ class entite():
         self.vx = self.vx_random
         if self.x <= 0:
             self.x = FENETRE_LARGEUR - 35
-        elif self.x >= FENETRE_LARGEUR - 30:
-            self.x = 5
+        elif self.x >= FENETRE_LARGEUR - 35:
+            self.x = 10
+
 #---CONFIG MAP---#
 map= [    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-
           [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-
           [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-
           [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-
           [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-
           [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-
           [1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-
           [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-
           [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-
           [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-
           [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-
           [0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0],
-
           [1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1],
-
           [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-
           [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-
           [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-
           [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-
           [1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1],
-
           [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-
           [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-
           [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-
           [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-
           [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],
-
-          [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],
-
-          ]
+          [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],]
 
 #---FONCTIONS---#
 def diagnostics():
@@ -235,21 +212,36 @@ mario_x, mario_y = FENETRE_LARGEUR//2, FENETRE_HAUTEUR - 100
 mario_vx, mario_vy = 0, 0
 
 
-ennemi1 = entite(random.randint(1, FENETRE_LARGEUR), 10)
-ennemi2 = entite(random.randint(1, FENETRE_LARGEUR), 10)
-ennemi3 = entite(random.randint(1, FENETRE_LARGEUR), 10)
-ennemi4 = entite(random.randint(1, FENETRE_LARGEUR), 10)
-ennemi5 = entite(random.randint(1, FENETRE_LARGEUR), 10)
-ennemi6 = entite(random.randint(1, FENETRE_LARGEUR), 10)
-ennemi7 = entite(random.randint(1, FENETRE_LARGEUR), 10)
-ennemi8 = entite(random.randint(1, FENETRE_LARGEUR), 10)
-ennemi9 = entite(random.randint(1, FENETRE_LARGEUR), 10)
-ennemi10 = entite(random.randint(1, FENETRE_LARGEUR), 10)
-ennemi11 = entite(random.randint(1, FENETRE_LARGEUR), 10)
-ennemi12 = entite(random.randint(1, FENETRE_LARGEUR), 10)
-ennemi13 = entite(random.randint(1, FENETRE_LARGEUR), 10)
-ennemi14 = entite(random.randint(1, FENETRE_LARGEUR), 10)
-ennemi15 = entite(random.randint(1, FENETRE_LARGEUR), 10)
+ennemi1 = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
+ennemi2 = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
+ennemi3 = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
+ennemi4 = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
+ennemi5 = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
+ennemi6 = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
+ennemi7 = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
+ennemi8 = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
+ennemi9 = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
+ennemi10 = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
+ennemi11 = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
+ennemi12 = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
+ennemi13 = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
+ennemi14 = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
+ennemi15 = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
+ennemi16 = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
+ennemi17 = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
+ennemi18 = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
+ennemi19 = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
+ennemi20 = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
+ennemi21 = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
+ennemi22 = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
+ennemi23 = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
+ennemi24 = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
+ennemi25 = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
+ennemi26 = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
+ennemi27 = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
+ennemi28 = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
+ennemi29 = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
+ennemi30 = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
 
 while not fini:
     traite_entrees()
@@ -273,6 +265,21 @@ while not fini:
     ennemi13.mise_a_jour_position_ennemi()
     ennemi14.mise_a_jour_position_ennemi()
     ennemi15.mise_a_jour_position_ennemi()
+    ennemi16.mise_a_jour_position_ennemi()
+    ennemi17.mise_a_jour_position_ennemi()
+    ennemi18.mise_a_jour_position_ennemi()
+    ennemi19.mise_a_jour_position_ennemi()
+    ennemi20.mise_a_jour_position_ennemi()
+    ennemi21.mise_a_jour_position_ennemi()
+    ennemi22.mise_a_jour_position_ennemi()
+    ennemi23.mise_a_jour_position_ennemi()
+    ennemi24.mise_a_jour_position_ennemi()
+    ennemi25.mise_a_jour_position_ennemi()
+    ennemi26.mise_a_jour_position_ennemi()
+    ennemi27.mise_a_jour_position_ennemi()
+    ennemi28.mise_a_jour_position_ennemi()
+    ennemi29.mise_a_jour_position_ennemi()
+    ennemi30.mise_a_jour_position_ennemi()
 
     fenetre.blit(ennemi_image, (ennemi1.x, ennemi1.y))
     fenetre.blit(ennemi_image, (ennemi2.x, ennemi2.y))
@@ -289,6 +296,21 @@ while not fini:
     fenetre.blit(ennemi_image, (ennemi13.x, ennemi13.y))
     fenetre.blit(ennemi_image, (ennemi14.x, ennemi14.y))
     fenetre.blit(ennemi_image, (ennemi15.x, ennemi15.y))
+    fenetre.blit(ennemi_image, (ennemi16.x, ennemi16.y))
+    fenetre.blit(ennemi_image, (ennemi17.x, ennemi17.y))
+    fenetre.blit(ennemi_image, (ennemi18.x, ennemi18.y))
+    fenetre.blit(ennemi_image, (ennemi19.x, ennemi19.y))
+    fenetre.blit(ennemi_image, (ennemi20.x, ennemi20.y))
+    fenetre.blit(ennemi_image, (ennemi21.x, ennemi21.y))
+    fenetre.blit(ennemi_image, (ennemi22.x, ennemi22.y))
+    fenetre.blit(ennemi_image, (ennemi23.x, ennemi23.y))
+    fenetre.blit(ennemi_image, (ennemi24.x, ennemi24.y))
+    fenetre.blit(ennemi_image, (ennemi25.x, ennemi25.y))
+    fenetre.blit(ennemi_image, (ennemi26.x, ennemi26.y))
+    fenetre.blit(ennemi_image, (ennemi27.x, ennemi27.y))
+    fenetre.blit(ennemi_image, (ennemi28.x, ennemi28.y))
+    fenetre.blit(ennemi_image, (ennemi29.x, ennemi29.y))
+    fenetre.blit(ennemi_image, (ennemi30.x, ennemi30.y))
 
     horloge.tick(30)
     pygame.display.flip()
