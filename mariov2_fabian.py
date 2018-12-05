@@ -1,6 +1,7 @@
 import pygame
 from pygame.locals import *
 import random
+import time
 
 pygame.init()
 
@@ -115,6 +116,8 @@ def traite_entrees():
             if event.key == K_SPACE and mario_enSaut == False:
                 mario_vy = -35
                 mario_enSaut = True
+            if event.key == pygame.K_g:
+                generer_ennemi()
         elif mario_vy == 0:
             mario_enSaut = False
     keys_pressed = pygame.key.get_pressed()
@@ -203,6 +206,9 @@ def mise_a_jour_position_mario():
     elif mario_x == FENETRE_LARGEUR - 30:
         mario_x = 5
 
+def generer_ennemi():
+        ennemi = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
+        liste_ennemi.append(ennemi)
 
 #--- BOUCLE PRINCIPALE ---#
 
@@ -211,37 +217,8 @@ mario_enSaut = False
 mario_x, mario_y = FENETRE_LARGEUR//2, FENETRE_HAUTEUR - 100
 mario_vx, mario_vy = 0, 0
 
-
-ennemi1 = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
-ennemi2 = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
-ennemi3 = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
-ennemi4 = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
-ennemi5 = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
-ennemi6 = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
-ennemi7 = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
-ennemi8 = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
-ennemi9 = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
-ennemi10 = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
-ennemi11 = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
-ennemi12 = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
-ennemi13 = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
-ennemi14 = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
-ennemi15 = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
-ennemi16 = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
-ennemi17 = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
-ennemi18 = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
-ennemi19 = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
-ennemi20 = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
-ennemi21 = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
-ennemi22 = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
-ennemi23 = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
-ennemi24 = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
-ennemi25 = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
-ennemi26 = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
-ennemi27 = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
-ennemi28 = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
-ennemi29 = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
-ennemi30 = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
+liste_ennemi = []
+generer_ennemi()
 
 while not fini:
     traite_entrees()
@@ -249,69 +226,9 @@ while not fini:
     dessiner_map(fenetre, map)
     mise_a_jour_position_mario()
     fenetre.blit(mario_image, (mario_x, mario_y))
-
-    ennemi1.mise_a_jour_position_ennemi()
-    ennemi2.mise_a_jour_position_ennemi()
-    ennemi3.mise_a_jour_position_ennemi()
-    ennemi4.mise_a_jour_position_ennemi()
-    ennemi5.mise_a_jour_position_ennemi()
-    ennemi6.mise_a_jour_position_ennemi()
-    ennemi7.mise_a_jour_position_ennemi()
-    ennemi8.mise_a_jour_position_ennemi()
-    ennemi9.mise_a_jour_position_ennemi()
-    ennemi10.mise_a_jour_position_ennemi()
-    ennemi11.mise_a_jour_position_ennemi()
-    ennemi12.mise_a_jour_position_ennemi()
-    ennemi13.mise_a_jour_position_ennemi()
-    ennemi14.mise_a_jour_position_ennemi()
-    ennemi15.mise_a_jour_position_ennemi()
-    ennemi16.mise_a_jour_position_ennemi()
-    ennemi17.mise_a_jour_position_ennemi()
-    ennemi18.mise_a_jour_position_ennemi()
-    ennemi19.mise_a_jour_position_ennemi()
-    ennemi20.mise_a_jour_position_ennemi()
-    ennemi21.mise_a_jour_position_ennemi()
-    ennemi22.mise_a_jour_position_ennemi()
-    ennemi23.mise_a_jour_position_ennemi()
-    ennemi24.mise_a_jour_position_ennemi()
-    ennemi25.mise_a_jour_position_ennemi()
-    ennemi26.mise_a_jour_position_ennemi()
-    ennemi27.mise_a_jour_position_ennemi()
-    ennemi28.mise_a_jour_position_ennemi()
-    ennemi29.mise_a_jour_position_ennemi()
-    ennemi30.mise_a_jour_position_ennemi()
-
-    fenetre.blit(ennemi_image, (ennemi1.x, ennemi1.y))
-    fenetre.blit(ennemi_image, (ennemi2.x, ennemi2.y))
-    fenetre.blit(ennemi_image, (ennemi3.x, ennemi3.y))
-    fenetre.blit(ennemi_image, (ennemi4.x, ennemi4.y))
-    fenetre.blit(ennemi_image, (ennemi5.x, ennemi5.y))
-    fenetre.blit(ennemi_image, (ennemi6.x, ennemi6.y))
-    fenetre.blit(ennemi_image, (ennemi7.x, ennemi7.y))
-    fenetre.blit(ennemi_image, (ennemi8.x, ennemi8.y))
-    fenetre.blit(ennemi_image, (ennemi9.x, ennemi9.y))
-    fenetre.blit(ennemi_image, (ennemi10.x, ennemi10.y))
-    fenetre.blit(ennemi_image, (ennemi11.x, ennemi11.y))
-    fenetre.blit(ennemi_image, (ennemi12.x, ennemi12.y))
-    fenetre.blit(ennemi_image, (ennemi13.x, ennemi13.y))
-    fenetre.blit(ennemi_image, (ennemi14.x, ennemi14.y))
-    fenetre.blit(ennemi_image, (ennemi15.x, ennemi15.y))
-    fenetre.blit(ennemi_image, (ennemi16.x, ennemi16.y))
-    fenetre.blit(ennemi_image, (ennemi17.x, ennemi17.y))
-    fenetre.blit(ennemi_image, (ennemi18.x, ennemi18.y))
-    fenetre.blit(ennemi_image, (ennemi19.x, ennemi19.y))
-    fenetre.blit(ennemi_image, (ennemi20.x, ennemi20.y))
-    fenetre.blit(ennemi_image, (ennemi21.x, ennemi21.y))
-    fenetre.blit(ennemi_image, (ennemi22.x, ennemi22.y))
-    fenetre.blit(ennemi_image, (ennemi23.x, ennemi23.y))
-    fenetre.blit(ennemi_image, (ennemi24.x, ennemi24.y))
-    fenetre.blit(ennemi_image, (ennemi25.x, ennemi25.y))
-    fenetre.blit(ennemi_image, (ennemi26.x, ennemi26.y))
-    fenetre.blit(ennemi_image, (ennemi27.x, ennemi27.y))
-    fenetre.blit(ennemi_image, (ennemi28.x, ennemi28.y))
-    fenetre.blit(ennemi_image, (ennemi29.x, ennemi29.y))
-    fenetre.blit(ennemi_image, (ennemi30.x, ennemi30.y))
-
+    for ennemi in liste_ennemi:
+        ennemi.mise_a_jour_position_ennemi()
+        fenetre.blit(ennemi_image, (ennemi.x, ennemi.y))
     horloge.tick(30)
     pygame.display.flip()
     diagnostics()   ###TEST###
