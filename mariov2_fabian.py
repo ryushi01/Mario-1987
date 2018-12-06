@@ -48,7 +48,7 @@ mario_image = pygame.Surface((25, 25))
 mario_image.fill(ROUGE)
 
 ennemi_image = pygame.Surface((25, 25))
-ennemi_image.fill(ALEATOIRE)
+ennemi_image.fill(VERT)
 
 ###DEFINITION ENTITES###
 class entite():
