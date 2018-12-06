@@ -229,11 +229,15 @@ def mise_a_jour_position_mario():
         mario_x = 5
 
 def generer_ennemi():
-    global temps_spawn, temps_ecoule
+    global temps_spawn
     ennemi = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
     liste_ennemi.append(ennemi)
     temps_spawn -= 50
     pygame.time.set_timer(nouveauennemi, temps_spawn)
+def affichage_ennemi():
+    for ennemi in liste_ennemi:
+        ennemi.mise_a_jour_position_ennemi()
+        fenetre.blit(ennemi_image, (ennemi.x, ennemi.y))
 
 def dessiner_infos():
     global affichage_score, affichage_score2, affichage_temps, temps_spawn
@@ -261,9 +265,7 @@ while not fini:
     dessiner_infos()
     mise_a_jour_position_mario()
     fenetre.blit(mario_image, (mario_x, mario_y))
-    for ennemi in liste_ennemi:
-        ennemi.mise_a_jour_position_ennemi()
-        fenetre.blit(ennemi_image, (ennemi.x, ennemi.y))
+    affichage_ennemi()
     horloge.tick(30)
     pygame.display.flip()
     diagnostics()
