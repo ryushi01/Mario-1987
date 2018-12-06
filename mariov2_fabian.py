@@ -39,7 +39,7 @@ sol = pygame.image.load('images/brick2.png')
 sol = pygame.transform.scale(sol, (25, 25))
 
 ennemi_image = pygame.image.load('images/goomba_face.png')
-ennemi_image = pygame.transform.scale(sol, (25, 25))
+ennemi_image = pygame.transform.scale(ennemi_image, (25, 25))
 
 ###DEFINITION classe_ennemiS###
 class classe_ennemi():
