@@ -18,7 +18,6 @@ GRAVITE = 4
 class joueur_principal():
     def __init__(self, x, y, largeur, hauteur):
 
-
         self.hauteur = hauteur
         self.largeur = largeur
 
@@ -200,7 +199,7 @@ def traite_entrees():
     if touche_maintenue[pygame.K_LEFT]:
         mario.gauche = True
         mario.droite = False
-    if mario.vy == 0:
+    if mario.vy == 0 and mario.y != 175 and mario.y != 300 and mario.y != 325 and mario.y != 450:
         mario.enSaut = False
     if mario.vx == 0:
         mario.compteurImage = 0
