@@ -48,7 +48,7 @@ mario_image = pygame.Surface((25, 25))
 mario_image.fill(ROUGE)
 
 ennemi_image = pygame.Surface((25, 25))
-ennemi_image.fill(VERT)
+ennemi_image.fill(ALEATOIRE)
 
 ###DEFINITION ENTITES###
 class entite():
@@ -80,19 +80,19 @@ class entite():
         self.y += self.vy
         self.x, self.y, self.vx, self.vy = bloque_sur_collision(map, (self.ancien_x, self.ancien_y), (self.x, self.y), self.vx, self.vy)
         self.vx = self.vx_random
-        if self.x <= 0:
-            self.x = FENETRE_LARGEUR - 35
+        if self.x <= 10:
+            if self.y == 525 and self.x <= 10:
+                self.x = FENETRE_LARGEUR - 35
+                self.y = 125
+            else: self.x = FENETRE_LARGEUR - 35
+
         elif self.x >= FENETRE_LARGEUR - 35:
-            self.x = 10
-        ###NE FONCTIONNE PAS CORRECTEMENT###
-        if self.y == 525 and self.x <= 0:
-            self.x = random.randint(25, FENETRE_LARGEUR - 25)
-            self.y = 10
-        elif self.y == 525 and self.x >= FENETRE_LARGEUR - 35:
-            self.x = random.randint(25, FENETRE_LARGEUR - 25)
-            self.y = 10
-        ####################################
-        
+            if self.y == 525 and self.x >= FENETRE_LARGEUR - 35:
+                self.x = 10
+                self.y = 125
+            else: self.x = 10
+
+
 #---CONFIG MAP---#
 map= [    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
           [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
