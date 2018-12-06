@@ -38,10 +38,10 @@ mario_x, mario_y = FENETRE_LARGEUR//2, FENETRE_HAUTEUR - 100
 mario_vx, mario_vy = 0, 0
 
 #---CHARGEMENT IMAGES---#
-plateforme = pygame.image.load('images/platform.png')
+plateforme = pygame.image.load('images/platform2.png')
 plateforme = pygame.transform.scale(plateforme, (25, 25))
 
-sol = pygame.image.load('images/brick.png')
+sol = pygame.image.load('images/brick2.png')
 sol = pygame.transform.scale(sol, (25, 25))
 
 mario_image = pygame.Surface((25, 25))
