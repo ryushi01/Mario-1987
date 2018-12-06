@@ -31,11 +31,6 @@ pygame.time.set_timer(nouveauennemi, temps_spawn)
 pygame.display.set_caption('MARIO')
 liste_ennemi = []
 
-#---INITIALISER MARIO---#
-#mario_enSaut = False
-#mario_x, mario_y = FENETRE_LARGEUR//2, FENETRE_HAUTEUR - 100
-#mario_vx, mario_vy = 0, 0
-
 #---CHARGEMENT IMAGES---#
 background = pygame.image.load('images/background2.png')
 plateforme = pygame.image.load('images/platform2.png')
@@ -204,7 +199,7 @@ def traite_entrees():
     if touche_maintenue[pygame.K_LEFT]:
         mario.gauche = True
         mario.droite = False
-    if mario.vy == 0:
+    if mario.vy == 0 and mario.y != 175 and mario.y != 300 and mario.y != 325 and mario.y != 450:
         mario.enSaut = False
     if mario.vx == 0:
         mario.compteurImage = 0
