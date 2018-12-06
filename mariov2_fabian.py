@@ -2,8 +2,7 @@ import pygame
 from pygame.locals import *
 import random
 import time
-
-pygame.init()
+import math
 
 DEBUG_MODE = False
 
@@ -13,18 +12,30 @@ BLEU_ACIER = (70, 130, 180)
 BRUN = (88, 41, 0)
 ROUGE = (255, 0, 0)
 VERT =(0, 255, 0)
+BLANC =(255, 255, 255)
 ALEATOIRE = (((random.randint(0, 255)), (random.randint(0, 255)), (random.randint(0, 255))))
-
 FENETRE_LARGEUR = 800
 FENETRE_HAUTEUR = 600
 FENETRE_TAILLE = [FENETRE_LARGEUR, FENETRE_HAUTEUR]
 fenetre = pygame.display.set_mode(FENETRE_TAILLE)
 background = pygame.image.load('images/background.png')
 GRAVITE = 4
+
 #---AUTRES VARIABLES---#
+temps_ecoule = 0
+score = 0
 fini = False
 horloge = pygame.time.Clock()
+nouveauennemi = pygame.USEREVENT + 1
+temps_spawn = 7500
+pygame.time.set_timer(nouveauennemi, temps_spawn)
 pygame.display.set_caption('MARIO')
+liste_ennemi = []
+
+#---INITIALISER MARIO---#
+mario_enSaut = False
+mario_x, mario_y = FENETRE_LARGEUR//2, FENETRE_HAUTEUR - 100
+mario_vx, mario_vy = 0, 0
 
 #---CHARGEMENT IMAGES---#
 plateforme = pygame.image.load('images/platform.png')
@@ -73,7 +84,15 @@ class entite():
             self.x = FENETRE_LARGEUR - 35
         elif self.x >= FENETRE_LARGEUR - 35:
             self.x = 10
-
+        ###NE FONCTIONNE PAS CORRECTEMENT###
+        if self.y == 525 and self.x <= 0:
+            self.x = random.randint(25, FENETRE_LARGEUR - 25)
+            self.y = 10
+        elif self.y == 525 and self.x >= FENETRE_LARGEUR - 35:
+            self.x = random.randint(25, FENETRE_LARGEUR - 25)
+            self.y = 10
+        ####################################
+        
 #---CONFIG MAP---#
 map= [    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
           [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
@@ -103,12 +122,11 @@ map= [    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 #---FONCTIONS---#
 def diagnostics():
     if DEBUG_MODE == True:
-        print("ennemi 1 x :", ennemi.x, "ennemi 1 y :", ennemi.y)
-        print("ennemi 2 x :", ennemi2.x, "ennemi 2 y :", ennemi2.y)
-        print("mario x :", mario_x, "mario y :", mario_y)
+        print("Mario pos x :", mario_x, "pos y :", mario_y)
+        print("Delai apparition monstres :", temps_spawn)
 
 def traite_entrees():
-    global mario_x, mario_y, mario_vx, mario_vy, mario_enSaut, fini
+    global mario_x, mario_y, mario_vx, mario_vy, mario_enSaut, fini, score, temps_spawn
     for event in pygame.event.get():
         if event.type == QUIT:
             fini = True
@@ -118,6 +136,10 @@ def traite_entrees():
                 mario_enSaut = True
             if event.key == pygame.K_g:
                 generer_ennemi()
+                score += 100
+                temps_spawn += 25
+        elif event.type == nouveauennemi:
+            generer_ennemi()
         elif mario_vy == 0:
             mario_enSaut = False
     keys_pressed = pygame.key.get_pressed()
@@ -207,23 +229,36 @@ def mise_a_jour_position_mario():
         mario_x = 5
 
 def generer_ennemi():
-        ennemi = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
-        liste_ennemi.append(ennemi)
+    global temps_spawn, temps_ecoule
+    ennemi = entite(random.randint(25, FENETRE_LARGEUR - 25), 25)
+    liste_ennemi.append(ennemi)
+    temps_spawn -= 50
+    pygame.time.set_timer(nouveauennemi, temps_spawn)
+
+def dessiner_infos():
+    global affichage_score, affichage_score2, affichage_temps, temps_spawn
+    police = pygame.font.SysFont('monospace', 24, True)
+    affichage_score = police.render("Score:", True, BLANC)
+    affichage_score2 = police.render(str(score), True, BLANC)
+    affichage_temps = police.render("Time:", True, BLANC)
+    affichage_temps2 = police.render(str(math.trunc(temps_ecoule)), True, BLANC)
+    affichage_spawntime = police.render("Spawntime:", True, BLANC)
+    affichage_spawntime2 = police.render(str(temps_spawn), True, BLANC)
+    fenetre.blit(affichage_score, (10, 10))
+    fenetre.blit(affichage_score2, (92, 10))
+    fenetre.blit(affichage_spawntime, (FENETRE_LARGEUR//2, 10))
+    fenetre.blit(affichage_spawntime2, (FENETRE_LARGEUR//2+138, 10))
+    fenetre.blit(affichage_temps, (FENETRE_LARGEUR - 132, 10))
+    fenetre.blit(affichage_temps2, (FENETRE_LARGEUR - 64, 10))
 
 #--- BOUCLE PRINCIPALE ---#
-
-
-mario_enSaut = False
-mario_x, mario_y = FENETRE_LARGEUR//2, FENETRE_HAUTEUR - 100
-mario_vx, mario_vy = 0, 0
-
-liste_ennemi = []
-generer_ennemi()
-
+pygame.init()
 while not fini:
+    temps_ecoule = time.clock()
     traite_entrees()
     fenetre.blit(background, (0, 0))
     dessiner_map(fenetre, map)
+    dessiner_infos()
     mise_a_jour_position_mario()
     fenetre.blit(mario_image, (mario_x, mario_y))
     for ennemi in liste_ennemi:
@@ -231,5 +266,5 @@ while not fini:
         fenetre.blit(ennemi_image, (ennemi.x, ennemi.y))
     horloge.tick(30)
     pygame.display.flip()
-    diagnostics()   ###TEST###
+    diagnostics()
 pygame.quit()
