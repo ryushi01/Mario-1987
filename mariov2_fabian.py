@@ -85,13 +85,11 @@ class entite():
                 self.x = FENETRE_LARGEUR - 35
                 self.y = 125
             else: self.x = FENETRE_LARGEUR - 35
-
         elif self.x >= FENETRE_LARGEUR - 35:
             if self.y == 525 and self.x >= FENETRE_LARGEUR - 35:
                 self.x = 10
                 self.y = 125
             else: self.x = 10
-
 
 #---CONFIG MAP---#
 map= [    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
