@@ -37,8 +37,9 @@ plateforme = pygame.image.load('images/platform2.png')
 plateforme = pygame.transform.scale(plateforme, (25, 25))
 sol = pygame.image.load('images/brick2.png')
 sol = pygame.transform.scale(sol, (25, 25))
-ennemi_image = pygame.Surface((25, 25))
-ennemi_image.fill(VERT)
+
+ennemi_image = pygame.image.load('images/goomba_face.png')
+ennemi_image = pygame.transform.scale(sol, (25, 25))
 
 ###DEFINITION classe_ennemiS###
 class classe_ennemi():
