@@ -37,11 +37,10 @@ plateforme = pygame.image.load('images/platform2.png')
 plateforme = pygame.transform.scale(plateforme, (25, 25))
 sol = pygame.image.load('images/brick2.png')
 sol = pygame.transform.scale(sol, (25, 25))
-
 ennemi_image = pygame.image.load('images/goomba_face.png')
 ennemi_image = pygame.transform.scale(ennemi_image, (25, 25))
 
-###DEFINITION classe_ennemiS###
+###DEFINITION CLASSES###
 class classe_ennemi():
     def __init__(self, pos_x, pos_y):
         #IMAGES#
@@ -77,6 +76,8 @@ class classe_ennemi():
         self.y += self.vy
         self.x, self.y, self.vx, self.vy = bloque_sur_collision(map, (self.ancien_x, self.ancien_y), (self.x, self.y), self.vx, self.vy)
         self.vx = self.vx_random
+        if self.vx == 0:
+            self.vx = 1
         if self.x <= 10:
             if self.y == 525 and self.x <= 10:
                 self.x = FENETRE_LARGEUR - 35
@@ -110,28 +111,20 @@ class joueur_principal():
         self.gauche = False
         self.compteurImage = 0
         # IMAGES
-        self.mario0d = pygame.image.load('images/mario0d.png')
-        self.mario0d = pygame.transform.scale(self.mario0d, (self.largeur, self.hauteur))
-        self.mario1d = pygame.image.load('images/mario1d.png')
-        self.mario1d = pygame.transform.scale(self.mario1d, (self.largeur, self.hauteur))
-        self.mario2d = pygame.image.load('images/mario2d.png')
-        self.mario2d = pygame.transform.scale(self.mario2d, (self.largeur, self.hauteur))
-        self.mario3d = pygame.image.load('images/mario3d.png')
-        self.mario3d = pygame.transform.scale(self.mario3d, (self.largeur, self.hauteur))
+        self.mario0d = pygame.image.load('images/mario0d2.png')
+        self.mario0d = pygame.transform.scale(self.mario0d, (25, 25))
+        self.mario1d = pygame.image.load('images/mario1d2.png')
+        self.mario1d = pygame.transform.scale(self.mario1d, (25, 25))
         self.mariod = [self.mario0d, self.mario1d, self.mario0d, self.mario1d, self.mario0d, self.mario1d, self.mario0d, self.mario1d, self.mario0d, self.mario1d, self.mario0d, self.mario1d, self.mario0d, self.mario1d, self.mario0d, self.mario1d]
-        self.mario0g = pygame.image.load('images/mario0g.png')
-        self.mario0g = pygame.transform.scale(self.mario0g, (self.largeur, self.hauteur))
-        self.mario1g = pygame.image.load('images/mario1g.png')
-        self.mario1g = pygame.transform.scale(self.mario1g, (self.largeur, self.hauteur))
-        self.mario2g = pygame.image.load('images/mario2g.png')
-        self.mario2g = pygame.transform.scale(self.mario2g, (self.largeur, self.hauteur))
-        self.mario3g = pygame.image.load('images/mario3g.png')
-        self.mario3g = pygame.transform.scale(self.mario3g, (self.largeur, self.hauteur))
+        self.mario0g = pygame.image.load('images/mario0g2.png')
+        self.mario0g = pygame.transform.scale(self.mario0g, (25, 25))
+        self.mario1g = pygame.image.load('images/mario1g2.png')
+        self.mario1g = pygame.transform.scale(self.mario1g, (25, 25))
         self.mariog = [self.mario0g, self.mario1g, self.mario0g, self.mario1g, self.mario0g, self.mario1g, self.mario0g, self.mario1g, self.mario0g, self.mario1g, self.mario0g, self.mario1g, self.mario0g, self.mario1g, self.mario0g, self.mario1g]
-        self.mariosg = pygame.image.load('images/mariosg.png')
-        self.mariosg = pygame.transform.scale(self.mariosg, (self.largeur, self.hauteur))
-        self.mariosd = pygame.image.load('images/mariosd.png')
-        self.mariosd = pygame.transform.scale(self.mariosd, (self.largeur, self.hauteur))
+        self.mariosg = pygame.image.load('images/mariosg2.png')
+        self.mariosg = pygame.transform.scale(self.mariosg, (25, 25))
+        self.mariosd = pygame.image.load('images/mariosd2.png')
+        self.mariosd = pygame.transform.scale(self.mariosd, (25, 25))
     def affiche_joueur_principal(self, fenetre):
         if self.compteurImage + 1 >= 32:
             self.compteurImage = 0
@@ -328,7 +321,7 @@ def dessiner_infos():
 
 #--- BOUCLE PRINCIPALE ---#
 pygame.init()
-mario = joueur_principal(25, 80, 25, 25)
+mario = joueur_principal(FENETRE_LARGEUR//2, FENETRE_HAUTEUR-130, 25, 25)
 while not fini:
     temps_ecoule = time.clock()
     traite_entrees()
