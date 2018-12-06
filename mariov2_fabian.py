@@ -69,7 +69,7 @@ class classe_ennemi():
         self.pos = (self.i, self.j)
         self.vx_random = random.randint(-3, 3)
         if self.vx_random == 0:
-            self.vx_random = 1
+            self.vx_random = random.randint(-3, 3)
     def mise_a_jour_position_ennemi(self):
         self.ancien_x, self.ancien_y = self.x, self.y
         self.vy += GRAVITE
