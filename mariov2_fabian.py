@@ -292,8 +292,8 @@ def affichage_acteurs():
     def affichage_mario():
         mario.mise_a_jour_position()
         mario.affiche_joueur_principal(fenetre)
-    affichage_mario()
     affichage_ennemi()
+    affichage_mario()
 
 def dessiner_infos():
     global affichage_score, affichage_score2, affichage_temps, temps_spawn
