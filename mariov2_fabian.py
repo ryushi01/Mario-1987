@@ -44,12 +44,18 @@ ennemi_image = pygame.transform.scale(ennemi_image, (25, 25))
 ###DEFINITION classe_ennemiS###
 class classe_ennemi():
     def __init__(self, pos_x, pos_y):
+        #IMAGES#
+        self.goombagauche = pygame.image.load('images/goomba_gauche.png')
+        self.goombagauche = pygame.transform.scale(self.goombagauche, (25, 25))
+        self.goombadroite = pygame.image.load('images/goomba_droite.png')
+        self.goombadroite = pygame.transform.scale(self.goombadroite, (25, 25))
         self.x = pos_x
         self.y = pos_y
         self.vx = 0
         self.vy = 0
-        self.enSaut = False
         self.pos = (pos_x, pos_y)
+        self.enSaut = False
+        self.compteurImage = 0
         ###MAJ POSITION###
         self.ancien_x, self.ancien_y = self.x, self.y
         self.vy += GRAVITE
@@ -81,6 +87,15 @@ class classe_ennemi():
                 self.x = 10
                 self.y = 125
             else: self.x = 10
+    def affiche_ennemi(self):
+        if self.compteurImage <= 4:
+            self.image_en_cours = self.goombadroite
+            self.compteurImage += 1
+        elif self.compteurImage <= 8 and self.compteurImage > 4:
+            self.image_en_cours = self.goombagauche
+            self.compteurImage += 1
+        else: self.compteurImage = 0
+        fenetre.blit(self.image_en_cours, (self.x, self.y))
 
 class joueur_principal():
     def __init__(self, x, y, largeur, hauteur):
@@ -288,7 +303,7 @@ def affichage_acteurs():
     def affichage_ennemi():
         for ennemi in liste_ennemi:
             ennemi.mise_a_jour_position_ennemi()
-            fenetre.blit(ennemi_image, (ennemi.x, ennemi.y))
+            ennemi.affiche_ennemi()
     def affichage_mario():
         mario.mise_a_jour_position()
         mario.affiche_joueur_principal(fenetre)
