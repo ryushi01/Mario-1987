@@ -18,7 +18,6 @@ FENETRE_LARGEUR = 800
 FENETRE_HAUTEUR = 600
 FENETRE_TAILLE = [FENETRE_LARGEUR, FENETRE_HAUTEUR]
 fenetre = pygame.display.set_mode(FENETRE_TAILLE)
-background = pygame.image.load('images/background.png')
 GRAVITE = 4
 
 #---AUTRES VARIABLES---#
@@ -38,15 +37,13 @@ mario_x, mario_y = FENETRE_LARGEUR//2, FENETRE_HAUTEUR - 100
 mario_vx, mario_vy = 0, 0
 
 #---CHARGEMENT IMAGES---#
+background = pygame.image.load('images/background2.png')
 plateforme = pygame.image.load('images/platform2.png')
 plateforme = pygame.transform.scale(plateforme, (25, 25))
-
 sol = pygame.image.load('images/brick2.png')
 sol = pygame.transform.scale(sol, (25, 25))
-
 mario_image = pygame.Surface((25, 25))
 mario_image.fill(ROUGE)
-
 ennemi_image = pygame.Surface((25, 25))
 ennemi_image.fill(VERT)
 
