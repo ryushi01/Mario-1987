@@ -348,7 +348,7 @@ def affiche_score():
     affichage_score = police.render("Score:", True, BLANC)
     affichage_score2 = police.render(str(score), True, BLANC)
     fenetre.blit(affichage_score, (10, 10))
-    fenetre.blit(affichage_score2, (90, 10))
+    fenetre.blit(affichage_score2, (120, 10))
 
 def affiche_intro():
     fenetre.fill(NOIR)
