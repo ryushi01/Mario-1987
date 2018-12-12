@@ -5,9 +5,7 @@ pygame.init()
 #---CONSTANTES---#
 
 NOIR = (0, 0, 0)
-GRIS = (71, 71, 71)
 BLANC = (255, 255, 255)
-ROUGE = (255, 0, 0)
 
 FENETRE_LARGEUR = 800
 FENETRE_HAUTEUR = 600
@@ -36,10 +34,9 @@ class joueur_principal():
         self.gauche = False
 
         self.compteurImage = 0
+        # Servira à gérer les suites d'images
 
         self.mort = False
-
-
 
         # IMAGES
 
@@ -49,13 +46,8 @@ class joueur_principal():
         self.mario1d = pygame.image.load('images/mario1d.png')
         self.mario1d = pygame.transform.scale(self.mario1d, (self.largeur, self.hauteur))
 
-        #self.mario2d = pygame.image.load('images/mario2d.png')
-        #self.mario2d = pygame.transform.scale(self.mario2d, (self.largeur, self.hauteur))
-
-        #self.mario3d = pygame.image.load('images/mario3d.png')
-        #self.mario3d = pygame.transform.scale(self.mario3d, (self.largeur, self.hauteur))
-
         self.mariod = [self.mario0d, self.mario1d, self.mario0d, self.mario1d, self.mario0d, self.mario1d, self.mario0d, self.mario1d, self.mario0d, self.mario1d, self.mario0d, self.mario1d, self.mario0d, self.mario1d, self.mario0d, self.mario1d]
+        # Permet l'animation de marche de mario (vers la droite)
 
         self.mario0g = pygame.image.load('images/mario0g.png')
         self.mario0g = pygame.transform.scale(self.mario0g, (self.largeur, self.hauteur))
@@ -63,45 +55,50 @@ class joueur_principal():
         self.mario1g = pygame.image.load('images/mario1g.png')
         self.mario1g = pygame.transform.scale(self.mario1g, (self.largeur, self.hauteur))
 
-        #self.mario2g = pygame.image.load('images/mario2g.png')
-        #self.mario2g = pygame.transform.scale(self.mario2g, (self.largeur, self.hauteur))
-
-        #self.mario3g = pygame.image.load('images/mario3g.png')
-        #self.mario3g = pygame.transform.scale(self.mario3g, (self.largeur, self.hauteur))
-
         self.mariog = [self.mario0g, self.mario1g, self.mario0g, self.mario1g, self.mario0g, self.mario1g, self.mario0g, self.mario1g, self.mario0g, self.mario1g, self.mario0g, self.mario1g, self.mario0g, self.mario1g, self.mario0g, self.mario1g]
+        # Permet l'animation de marche (vers la gauche)
 
         self.mariosg = pygame.image.load('images/mariosg.png')
         self.mariosg = pygame.transform.scale(self.mariosg, (self.largeur, self.hauteur))
+        # Image de saut à gauche
 
         self.mariosd = pygame.image.load('images/mariosd.png')
         self.mariosd = pygame.transform.scale(self.mariosd, (self.largeur, self.hauteur))
+        # Image de saut à droite
 
         self.mariomort = pygame.image.load('images/mariogameover.png')
         self.mariomort = pygame.transform.scale(self.mariomort, (self.largeur, self.hauteur))
+        # Image quand mario meurt
 
     def affiche(self, fenetre):
-        if self.compteurImage + 1 >= 32:
+        if self.compteurImage + 1 >= 32: # L'écran étant rafraichît toutes les 32 s (voir horloge.tick lignes 471 et 491)
             self.compteurImage = 0
         if self.gauche and not self.enSaut and self.mort == False:
             fenetre.blit(self.mariog[self.compteurImage // 2], (self.x, self.y))
             self.compteurImage += 1
+            # Gére l'animation de marche vers la gauche
         elif self.droite and not self.enSaut and self.mort == False:
             fenetre.blit(self.mariod[self.compteurImage // 2], (self.x, self.y))
             self.compteurImage += 1
+            # Gére l'animation de marche vers la droite
         elif self.droite and self.enSaut and self.mort == False:
             fenetre.blit(self.mariosd, (self.x, self.y))
             self.compteurImage += 1
+            # Gére l'animation de saut vers la droite
         elif self.gauche and self.enSaut and self.mort == False:
             fenetre.blit(self.mariosg, (self.x, self.y))
             self.compteurImage += 1
-        elif not self.gauche and not self.droite and self.enSaut and self.mort == False:
+            # Gére l'animation de saut vers la droite
+        elif not self.gauche and self.droite and self.enSaut and self.mort == False:
             fenetre.blit(self.mariosd, (self.x, self.y))
+            self.compteurImage += 1
+            # Gére l'animation de saut vers la droite
         elif self.mort == True:
             fenetre.blit(self.mariomort, (self.x, self.y))
+            # Gére l'animation de game over
         else:
             fenetre.blit(self.mario0d, (self.x, self.y))
-        #pygame.draw.rect(fenetre, (255, 0, 0), self.rect, 2)
+        # pygame.draw.rect(fenetre, (255, 0, 0), self.rect, 2 # Permet d'afficher le rectangle entourant mario (la hitbox)
 
     def mise_a_jour_position(self):
         self.ancien_x, self.ancien_y = self.x, self.y
@@ -120,7 +117,6 @@ class joueur_principal():
         elif self.x == FENETRE_LARGEUR - 30:
             self.x = 5
 
-        self.position = [self.x, self.y]
         self.rect = [self.x, self.y, 25, 25]
 
 
@@ -133,11 +129,13 @@ class ennemi():
         self.hauteur = hauteur
         self.largeur = largeur
 
-        self.mort = False
-
-        self.vx = random.randint(-3, 3)
-        if self.vx == 0:
-            self.vx = 1
+        self.vx_negative = random.randint(-4,-1)
+        self.vx_positive = random.randint(1, 4)
+        self.aleatoire = random.randint(1,2)
+        if self.aleatoire == 1:
+            self.vx = self.vx_positive
+        elif self.aleatoire == 2:
+            self.vx = self.vx_negative
         self.vy = 0
 
         self.compteurImage = 0
@@ -166,6 +164,9 @@ class ennemi():
 
         self.x, self.y, self.vx, self.vy = bloquer_si_collision_avec_plateforme(map, (self.ancien_x, self.ancien_y), (self.x, self.y), self.vx, self.vy)
 
+        if self.vx == 0:
+            self.vx == 3
+
         if self.x <= 10:
             if self.y == 525 and self.x <= 10:
                 self.x = FENETRE_LARGEUR - 35
@@ -177,59 +178,76 @@ class ennemi():
                 self.y = 125
             else: self.x = 10
 
-        self.position = [self.x, self.y]
         self.rect = [self.x, self.y, 25, 25]
 
     def affiche(self, fenetre):
 
-        if self.compteurImage <= 4 and self.mort == False:
+        if self.compteurImage <= 4:
             self.image_en_cours = self.goombad
             self.compteurImage += 1
-        elif self.compteurImage <= 8 and self.compteurImage > 4 and self.mort == False:
+        elif self.compteurImage <= 8 and self.compteurImage > 4:
             self.image_en_cours = self.goombag
             self.compteurImage += 1
-        elif self.mort == True:
-            self.image_en_cours = self.goombamort
         else:
             self.compteurImage = 0
         fenetre.blit(self.image_en_cours, (self.x, self.y))
-        #pygame.draw.rect(fenetre, (255, 0, 0), self.rect, 2)
+        #pygame.draw.rect(fenetre, (255, 0, 0), self.rect, 2) # Permet d'afficher le rectangle entourant un ennemi
 
 #---FONCTIONS---#
 
 def traite_entrees():
-    global fini, intro
+    global fini, intro, ennemis, score, son_saut, ennemis
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             fini = True
             intro = False
-        elif event.type == pygame.KEYDOWN:
-            intro = False
-            if event.key == pygame.K_q:
+        elif event.type == pygame.KEYDOWN and intro == True:
                 intro = False
-                fini = True
-            elif event.key == pygame.K_SPACE and mario.enSaut == False:
+                fini = False
+                mario.mort = False
+                score = 0
+                mario.droite = True
+                mario.gauche = False
+                ennemis = []
+                mario.x = 25
+                mario.y = 80
+                mario.vx = 0
+                mario.vy = 0
+        elif event.type == pygame.KEYDOWN and intro == False:
+            if event.key == pygame.K_SPACE and mario.enSaut == False and mario.mort == False:
                 mario.vy = - 35
-                mario.enSaut = True
-        elif event.type == nouvelennemi and intro == False:
+            elif event.key == pygame.K_r and mario.mort == True:
+                mario.mort = False
+                score = 0
+                mario.droite = True
+                mario.gauche = False
+                ennemis = []
+                mario.x = 25
+                mario.y = 80
+                mario.vx = 0
+                mario.vy = 0
+        elif event.type == nouvelennemi:
             generer_ennemi()
-
     touche_maintenue = pygame.key.get_pressed()
-
-    if touche_maintenue[pygame.K_RIGHT]:
+    if mario.vx > 0 and mario.mort == False:
         mario.droite = True
         mario.gauche = False
-    if touche_maintenue[pygame.K_LEFT]:
+    if mario.vx < 0 and mario.mort == False:
         mario.gauche = True
         mario.droite = False
+    if mario.vy < 0:
+        mario.enSaut = True
     if mario.vy == 0 and mario.y != 175 and mario.y != 300 and mario.y != 325 and mario.y != 450:
         mario.enSaut = False
     if mario.vx == 0:
         mario.compteurImage = 0
 
+    if mario.mort == False:
+        mario.vx = (touche_maintenue[pygame.K_RIGHT] - touche_maintenue[pygame.K_LEFT]) * 5
+    else:
+        mario.vx = 0
 
-    mario.vx = (touche_maintenue[pygame.K_RIGHT] - touche_maintenue[pygame.K_LEFT]) * 5
 
 
 
@@ -308,26 +326,23 @@ def ameliorer_precision(block, ancien_rect, nouv_rect):
 def collisions_entite():
     global fini, score, temps_spawn
     for goomba in ennemis:
-        if mario.rect[1] < goomba.rect[1] and mario.rect[1] + mario.rect[3] >= goomba.rect[1]:
+        if mario.rect[1] < goomba.rect[1] and mario.rect[1] + mario.rect[3] >= goomba.rect[1] and mario.mort == False:
             if mario.rect[0] + mario.rect[2] > goomba.rect[0] and mario.rect[0] < goomba.rect[0] + goomba.rect[2]:
-                goomba.mort = True
                 ennemis.pop(ennemis.index(goomba))
                 mario.vy = -25
                 score += 100
-                temps_spawn -= 100
-                if temps_spawn <= 1000:
-                    temps_spawn = 1000
-
         elif mario.rect[1] < goomba.rect[1] + goomba.rect[3] and mario.rect[1] + mario.rect[3] > goomba.rect[1]:
             if mario.rect[0] + mario.rect[2] > goomba.rect[0] and mario.rect[0] < goomba.rect[0] + goomba.rect[2]:
                 mario.mort = True
 
 
-
-
 def generer_ennemi():
-    goomba = ennemi(random.randint(25, FENETRE_LARGEUR - 25), 0, 25, 25)
-    ennemis.append(goomba)
+    if mario.mort == True and len(ennemis) < 10:
+        goomba = ennemi(random.randint(30, FENETRE_LARGEUR - 30), 0, 25, 25)
+        ennemis.append(goomba)
+    elif mario.mort == False and len(ennemis) < 50:
+        goomba = ennemi(random.randint(30, FENETRE_LARGEUR - 30), 0, 25, 25)
+        ennemis.append(goomba)
 
 
 def affiche_entites():
@@ -336,40 +351,60 @@ def affiche_entites():
             goomba.mise_a_jour_position()
             goomba.affiche(fenetre)
     def affiche_mario():
-        if mario.mort == False:
-            mario.mise_a_jour_position()
-        elif mario.mort == True:
-            mario.vy += GRAVITE
+        mario.mise_a_jour_position()
         mario.affiche(fenetre)
     affiche_ennemi()
     affiche_mario()
 
 def affiche_score():
-    affichage_score = police.render("Score:", True, BLANC)
+    affichage_score = police.render("SCORE:", True, BLANC)
     affichage_score2 = police.render(str(score), True, BLANC)
     fenetre.blit(affichage_score, (10, 10))
-    fenetre.blit(affichage_score2, (120, 10))
+    fenetre.blit(affichage_score2, (100, 10))
 
 def affiche_intro():
     fenetre.fill(NOIR)
-    titre = police_titre.render('Mario', True, ROUGE)
-    titre_largeur, titre_hauteur = police_titre.size('Mario')
-    fenetre.blit(titre, ((FENETRE_LARGEUR - titre_largeur) // 2, (FENETRE_HAUTEUR - titre_hauteur) // 4))
-    message1 = police.render("[Q]uitter", True, BLANC)
-    message1_largeur, message1_hauteur = police.size("[Q]uitter")
-    fenetre.blit(message1, ((FENETRE_LARGEUR - message1_largeur) // 2, 4 * FENETRE_HAUTEUR  // 5))
-    message2 = police.render("N'importe quelle touche pour commencer...", True, BLANC)
-    message2_largeur, message2_hauteur = police.size("N'importe quelle touche pour commencer...")
-    fenetre.blit(message2, ((FENETRE_LARGEUR - message2_largeur) // 2, 4 * FENETRE_HAUTEUR // 5 + 1.2 * message1_hauteur))
+    titre = pygame.image.load('images/mario_titre.png')
+    titre = pygame.transform.scale(titre, (300, 80))
+    fenetre.blit(titre, (FENETRE_LARGEUR/2 - 150, 30))
+    message = police.render("APPUYER SUR N'IMPORTE QUELLE TOUCHE POUR JOUER", True, BLANC)
+    message_largeur, message_hauteur = police.size("APPUYER SUR N'IMPORTE QUELLE TOUCHE POUR JOUER")
+    fenetre.blit(message, ((FENETRE_LARGEUR - message_largeur) // 2, 4 * FENETRE_HAUTEUR // 5))
 
+def affiche_game_over():
+    global intro
+    if mario.mort == True and intro == False:
+        message1 = police.render("GAME OVER !", True, BLANC)
+        message1_largeur, message1_hauteur = police.size("GAME OVER !")
+        fenetre.blit(message1, ((FENETRE_LARGEUR - message1_largeur) // 2, FENETRE_HAUTEUR  // 10))
+        message2 = police.render("[R]ECOMMENCER", True, BLANC)
+        message2_largeur, message2_hauteur = police.size("[R]ECOMMENCER")
+        fenetre.blit(message2, ((FENETRE_LARGEUR - message2_largeur) // 2, 3 * FENETRE_HAUTEUR // 5 ))
 
-
-
+def deplacements_artficiels():
+    global ennemis
+    if mario.mort == False:
+        mario.vx = 5
+        for goomba in ennemis:
+            goomba.rect = [goomba.x, goomba.y, 25, 25]
+            mario.rect = [mario.x, mario.y, 25, 25]
+            if mario.rect[1] == goomba.rect[1]:
+                if goomba.rect[0] - mario.rect[0] <= 40 and goomba.rect[0] - mario.rect[0] >= 0:
+                    mario.vy = -35
+        if mario.vy == 0:
+            aleatoire = random.randint(1,50)
+            if aleatoire == 10:
+                mario.vy = -37
+    if mario.mort == True:
+        mario.y = 80
+        mario.x = 25
+        ennemis = []
+        mario.mort = False
 
 
 #---AUTRES VARIABLES---#
 
-fini = False
+fini = True
 intro = True
 
 horloge = pygame.time.Clock()
@@ -379,14 +414,13 @@ pygame.display.set_caption('MARIO')
 mario = joueur_principal(25, 80, 25, 25)
 ennemis = []
 
-temps_ecoule = 0
 score = 0
 nouvelennemi = pygame.USEREVENT + 1
-temps_spawn = 5000
+temps_spawn = 3000
 pygame.time.set_timer(nouvelennemi, temps_spawn)
 
-police = pygame.font.SysFont('monospace', FENETRE_HAUTEUR//20, True)
-police_titre = pygame.font.SysFont('monospace', 80, True)
+police = pygame.font.SysFont('monospace', FENETRE_HAUTEUR//25, True)
+police_titre = pygame.font.SysFont('monospace', 50, True)
 
 plateforme = pygame.image.load('images/platform.png')
 plateforme = pygame.transform.scale(plateforme, (25, 25))
@@ -424,35 +458,42 @@ map= [    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 
 #--- BOUCLE PRINCIPALE ---#
 
-
 while intro:
 
     affiche_intro()
 
     traite_entrees()
 
-    horloge.tick(4)
-
-    pygame.display.flip()
-
-while not fini:
-
-    traite_entrees()
-
-    fenetre.fill(NOIR)
-
     dessiner_map(fenetre, map)
+
+    deplacements_artficiels()
 
     affiche_entites()
 
     collisions_entite()
 
-    affiche_score()
-
-    print(temps_spawn)
-
     horloge.tick(32)
 
     pygame.display.flip()
+
+    while not fini:
+
+        traite_entrees()
+
+        fenetre.fill(NOIR)
+
+        dessiner_map(fenetre, map)
+
+        affiche_entites()
+
+        collisions_entite()
+
+        affiche_score()
+
+        affiche_game_over()
+
+        horloge.tick(32)
+
+        pygame.display.flip()
 
 pygame.quit()
