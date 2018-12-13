@@ -9,6 +9,7 @@ FENETRE_LARGEUR = 800
 FENETRE_HAUTEUR = 600
 FENETRE_TAILLE = [FENETRE_LARGEUR, FENETRE_HAUTEUR]
 fenetre = pygame.display.set_mode(FENETRE_TAILLE)
+background = pygame.image.load('images/background2.png')
 GRAVITE = 4
 #---CLASSES---#
 class joueur_principal():
@@ -26,27 +27,27 @@ class joueur_principal():
         self.mort = False
 
         # IMAGES
-        self.mario0d = pygame.image.load('images/mario0d.png')
+        self.mario0d = pygame.image.load('images/mario0d2.png')
         self.mario0d = pygame.transform.scale(self.mario0d, (self.largeur, self.hauteur))
-        self.mario1d = pygame.image.load('images/mario1d.png')
+        self.mario1d = pygame.image.load('images/mario1d2.png')
         self.mario1d = pygame.transform.scale(self.mario1d, (self.largeur, self.hauteur))
         #self.mario2d = pygame.image.load('images/mario2d.png')
         #self.mario2d = pygame.transform.scale(self.mario2d, (self.largeur, self.hauteur))
         #self.mario3d = pygame.image.load('images/mario3d.png')
         #self.mario3d = pygame.transform.scale(self.mario3d, (self.largeur, self.hauteur))
         self.mariod = [self.mario0d, self.mario1d, self.mario0d, self.mario1d, self.mario0d, self.mario1d, self.mario0d, self.mario1d, self.mario0d, self.mario1d, self.mario0d, self.mario1d, self.mario0d, self.mario1d, self.mario0d, self.mario1d]
-        self.mario0g = pygame.image.load('images/mario0g.png')
+        self.mario0g = pygame.image.load('images/mario0g2.png')
         self.mario0g = pygame.transform.scale(self.mario0g, (self.largeur, self.hauteur))
-        self.mario1g = pygame.image.load('images/mario1g.png')
+        self.mario1g = pygame.image.load('images/mario1g2.png')
         self.mario1g = pygame.transform.scale(self.mario1g, (self.largeur, self.hauteur))
         #self.mario2g = pygame.image.load('images/mario2g.png')
         #self.mario2g = pygame.transform.scale(self.mario2g, (self.largeur, self.hauteur))
         #self.mario3g = pygame.image.load('images/mario3g.png')
         #self.mario3g = pygame.transform.scale(self.mario3g, (self.largeur, self.hauteur))
         self.mariog = [self.mario0g, self.mario1g, self.mario0g, self.mario1g, self.mario0g, self.mario1g, self.mario0g, self.mario1g, self.mario0g, self.mario1g, self.mario0g, self.mario1g, self.mario0g, self.mario1g, self.mario0g, self.mario1g]
-        self.mariosg = pygame.image.load('images/mariosg.png')
+        self.mariosg = pygame.image.load('images/mariosg2.png')
         self.mariosg = pygame.transform.scale(self.mariosg, (self.largeur, self.hauteur))
-        self.mariosd = pygame.image.load('images/mariosd.png')
+        self.mariosd = pygame.image.load('images/mariosd2.png')
         self.mariosd = pygame.transform.scale(self.mariosd, (self.largeur, self.hauteur))
         self.mariomort = pygame.image.load('images/mariogameover.png')
         self.mariomort = pygame.transform.scale(self.mariomort, (self.largeur, self.hauteur))
@@ -97,9 +98,9 @@ class ennemi():
         self.vy = 0
         self.compteurImage = 0
         # IMAGES
-        self.goombag = pygame.image.load('images/goombag.png')
+        self.goombag = pygame.image.load('images/goomba_gauche.png')
         self.goombag = pygame.transform.scale(self.goombag, (self.largeur, self.hauteur))
-        self.goombad = pygame.image.load('images/goombad.png')
+        self.goombad = pygame.image.load('images/goomba_droite.png')
         self.goombad = pygame.transform.scale(self.goombad, (self.largeur, self.hauteur))
         self.goombamort = pygame.image.load('images/goombamort.png')
         self.goombamort = pygame.transform.scale(self.goombamort, (self.largeur, self.hauteur))
@@ -167,13 +168,13 @@ def traite_entrees():
     mario.vx = (touche_maintenue[pygame.K_RIGHT] - touche_maintenue[pygame.K_LEFT]) * 5
 
 def dessiner_map(fenetre, map):
+    fenetre.blit(background, (0, 0))
     for j, ligne in enumerate(map):
         for i, case in enumerate(ligne):
             if case == 1:
                 fenetre.blit(plateforme, (i*25, j*25))
             elif case == 2:
                 fenetre.blit(sol, (i*25, j*25))
-
 def coordonnees_vers_grille (pos):
     x, y = pos
     i = max(0, int(x // 25))
@@ -277,9 +278,12 @@ def affiche_score():
     affichage_score2 = police.render(str(score), True, BLANC)
     fenetre.blit(affichage_score, (10, 10))
     fenetre.blit(affichage_score2, (120, 10))
+    affichage_spawn = police.render("Spawntime:", True, BLANC)
+    affichage_spawn2 = police.render(str(temps_spawn), True, BLANC)
+    fenetre.blit(affichage_spawn, (FENETRE_LARGEUR-280, 10))
+    fenetre.blit(affichage_spawn2, (FENETRE_LARGEUR-100, 10))
 
 def affiche_intro():
-    fenetre.fill(NOIR)
     titre = police_titre.render('Mario', True, ROUGE)
     titre_largeur, titre_hauteur = police_titre.size('Mario')
     fenetre.blit(titre, ((FENETRE_LARGEUR - titre_largeur) // 2, (FENETRE_HAUTEUR - titre_hauteur) // 4))
@@ -295,18 +299,18 @@ fini = False
 intro = True
 horloge = pygame.time.Clock()
 pygame.display.set_caption('MARIO')
-mario = joueur_principal(25, 80, 25, 25)
+mario = joueur_principal(FENETRE_LARGEUR//2, FENETRE_HAUTEUR-130, 25, 25)
 ennemis = []
 temps_ecoule = 0
 score = 0
 nouvelennemi = pygame.USEREVENT + 1
-temps_spawn = 5000
+temps_spawn = 100
 pygame.time.set_timer(nouvelennemi, temps_spawn)
 police = pygame.font.SysFont('monospace', FENETRE_HAUTEUR//20, True)
 police_titre = pygame.font.SysFont('monospace', 80, True)
-plateforme = pygame.image.load('images/platform.png')
+plateforme = pygame.image.load('images/platform2.png')
 plateforme = pygame.transform.scale(plateforme, (25, 25))
-sol = pygame.image.load('images/brick.png')
+sol = pygame.image.load('images/brick2.png')
 sol = pygame.transform.scale(sol, (25, 25))
 
 map= [    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
@@ -336,18 +340,17 @@ map= [    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
     ]
 #--- BOUCLE PRINCIPALE ---#
 while intro:
+    dessiner_map(fenetre, map)
     affiche_intro()
     traite_entrees()
     horloge.tick(4)
     pygame.display.flip()
 while not fini:
     traite_entrees()
-    fenetre.fill(NOIR)
     dessiner_map(fenetre, map)
     affiche_entites()
     collisions_entite()
     affiche_score()
-    print(temps_spawn)
     horloge.tick(32)
     pygame.display.flip()
 pygame.quit()
