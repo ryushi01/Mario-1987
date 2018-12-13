@@ -331,7 +331,7 @@ def collisions_entite():
                 ennemis.pop(ennemis.index(goomba))
                 mario.vy = -25
                 score += 100
-                temps_spawn -= 10
+                temps_spawn -= 20
                 pygame.time.set_timer(nouvelennemi, temps_spawn)
         elif mario.rect[1] < goomba.rect[1] + goomba.rect[3] and mario.rect[1] + mario.rect[3] > goomba.rect[1]:
             if mario.rect[0] + mario.rect[2] > goomba.rect[0] and mario.rect[0] < goomba.rect[0] + goomba.rect[2]:
