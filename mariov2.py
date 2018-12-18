@@ -143,9 +143,9 @@ class ennemi():
 
         # IMAGES
 
-        self.goombag = pygame.image.load('images/goombag.png')
+        self.goombag = pygame.image.load('images/goomba_gauche.png')
         self.goombag = pygame.transform.scale(self.goombag, (self.largeur, self.hauteur))
-        self.goombad = pygame.image.load('images/goombad.png')
+        self.goombad = pygame.image.load('images/goomba_droite.png')
         self.goombad = pygame.transform.scale(self.goombad, (self.largeur, self.hauteur))
         self.goombamort = pygame.image.load('images/goombamort.png')
         self.goombamort = pygame.transform.scale(self.goombamort, (self.largeur, self.hauteur))
@@ -252,6 +252,7 @@ def traite_entrees():
 
 
 def dessiner_map(fenetre, map):
+    fenetre.fill(NOIR)
     for j, ligne in enumerate(map):
         for i, case in enumerate(ligne):
             if case == 1:
@@ -336,12 +337,14 @@ def collisions_entite():
         elif mario.rect[1] < goomba.rect[1] + goomba.rect[3] and mario.rect[1] + mario.rect[3] > goomba.rect[1]:
             if mario.rect[0] + mario.rect[2] > goomba.rect[0] and mario.rect[0] < goomba.rect[0] + goomba.rect[2]:
                 mario.mort = True
+                temps_spawn = 3000
 
 
 def generer_ennemi():
     if mario.mort == True and len(ennemis) < 10:
         goomba = ennemi(random.randint(30, FENETRE_LARGEUR - 30), 0, 25, 25)
         ennemis.append(goomba)
+
     elif mario.mort == False and len(ennemis) < 50:
         goomba = ennemi(random.randint(30, FENETRE_LARGEUR - 30), 0, 25, 25)
         ennemis.append(goomba)
@@ -429,6 +432,8 @@ plateforme = pygame.transform.scale(plateforme, (25, 25))
 
 sol = pygame.image.load('images/brick.png')
 sol = pygame.transform.scale(sol, (25, 25))
+
+
 
 map= [    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
           [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
