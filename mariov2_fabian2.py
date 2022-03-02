@@ -1,3 +1,4 @@
+#---TEST ZONE---#
 import pygame, random, time
 pygame.init()
 #---CONSTANTES---#
