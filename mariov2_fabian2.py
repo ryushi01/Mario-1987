@@ -277,11 +277,11 @@ def affiche_score():
     affichage_score = police.render("Score:", True, BLANC)
     affichage_score2 = police.render(str(score), True, BLANC)
     fenetre.blit(affichage_score, (10, 10))
-    fenetre.blit(affichage_score2, (120, 10))
+    fenetre.blit(affichage_score2, (140, 10))
     affichage_spawn = police.render("Spawntime:", True, BLANC)
     affichage_spawn2 = police.render(str(temps_spawn), True, BLANC)
     fenetre.blit(affichage_spawn, (FENETRE_LARGEUR-280, 10))
-    fenetre.blit(affichage_spawn2, (FENETRE_LARGEUR-100, 10))
+    fenetre.blit(affichage_spawn2, (FENETRE_LARGEUR-60, 10))
 
 def affiche_intro():
     titre = police_titre.render('Mario', True, ROUGE)
@@ -304,7 +304,7 @@ ennemis = []
 temps_ecoule = 0
 score = 0
 nouvelennemi = pygame.USEREVENT + 1
-temps_spawn = 100
+temps_spawn = 5000
 pygame.time.set_timer(nouvelennemi, temps_spawn)
 police = pygame.font.SysFont('monospace', FENETRE_HAUTEUR//20, True)
 police_titre = pygame.font.SysFont('monospace', 80, True)

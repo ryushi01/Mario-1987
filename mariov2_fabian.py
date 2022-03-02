@@ -323,7 +323,7 @@ def dessiner_infos():
 pygame.init()
 mario = joueur_principal(FENETRE_LARGEUR//2, FENETRE_HAUTEUR-130, 25, 25)
 while not fini:
-    temps_ecoule = time.clock()
+    temps_ecoule = 0
     traite_entrees()
     fenetre.blit(background, (0, 0))
     dessiner_map(fenetre, map)
