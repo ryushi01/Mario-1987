@@ -288,8 +288,8 @@ def affiche_score():
     fenetre.blit(affichage_score2, (140, 10))
     affichage_spawn = police.render("Spawntime:", True, BLANC)
     affichage_spawn2 = police.render(str(temps_spawn), True, BLANC)
-    fenetre.blit(affichage_spawn, (FENETRE_LARGEUR-300, 10))
-    fenetre.blit(affichage_spawn2, (FENETRE_LARGEUR-80, 10))
+    fenetre.blit(affichage_spawn, (FENETRE_LARGEUR-320, 10))
+    fenetre.blit(affichage_spawn2, (FENETRE_LARGEUR-100, 10))
 
 def affiche_intro():
     titre = police_titre.render('Mario', True, ROUGE)
