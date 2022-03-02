@@ -247,9 +247,16 @@ def collisions_entite():
                 ennemis.pop(ennemis.index(goomba))
                 mario.vy = -25
                 score += 100
-                temps_spawn -= 100
+                if temps_spawn >= 4000 :
+                    temps_spawn -= 200
+                if temps_spawn >= 3000:
+                    temps_spawn -= 100
+                if temps_spawn >= 2500:
+                    temps_spawn -= 50
+                temps_spawn -= 25
                 if temps_spawn <= 1000:
                     temps_spawn = 1000
+                pygame.time.set_timer(nouvelennemi, temps_spawn)
 
         elif mario.rect[1] < goomba.rect[1] + goomba.rect[3] and mario.rect[1] + mario.rect[3] > goomba.rect[1]:
             if mario.rect[0] + mario.rect[2] > goomba.rect[0] and mario.rect[0] < goomba.rect[0] + goomba.rect[2]:
@@ -280,8 +287,8 @@ def affiche_score():
     fenetre.blit(affichage_score2, (140, 10))
     affichage_spawn = police.render("Spawntime:", True, BLANC)
     affichage_spawn2 = police.render(str(temps_spawn), True, BLANC)
-    fenetre.blit(affichage_spawn, (FENETRE_LARGEUR-280, 10))
-    fenetre.blit(affichage_spawn2, (FENETRE_LARGEUR-60, 10))
+    fenetre.blit(affichage_spawn, (FENETRE_LARGEUR-300, 10))
+    fenetre.blit(affichage_spawn2, (FENETRE_LARGEUR-80, 10))
 
 def affiche_intro():
     titre = police_titre.render('Mario', True, ROUGE)
