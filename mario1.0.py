@@ -1,5 +1,5 @@
 #---TEST ZONE---#
-import pygame, random, time
+import pygame, random
 pygame.init()
 #---CONSTANTES---#
 NOIR = (0, 0, 0)
@@ -176,7 +176,7 @@ def dessiner_map(fenetre, map):
                 fenetre.blit(plateforme, (i*25, j*25))
             elif case == 2:
                 fenetre.blit(sol, (i*25, j*25))
-def coordonnees_vers_grille (pos):
+def coordonnees_vers_grille(pos):
     x, y = pos
     i = max(0, int(x // 25))
     j = max(0, int(y // 25))
@@ -195,7 +195,7 @@ def obtenir_cases_voisines(map, i_start, j_start):
 def bloquer_si_collision_avec_plateforme(map, ancien_pos, nouv_pos, vx, vy):
     ancien_rect = pygame.Rect(ancien_pos, (25, 25))
     nouv_rect = pygame.Rect(nouv_pos, (25, 25))
-    i, j = coordonnees_vers_grille (nouv_pos)
+    i, j = coordonnees_vers_grille(nouv_pos)
     collisions_futurs = []
     carres = obtenir_cases_voisines(map, i, j)
     for block in carres:
@@ -248,7 +248,7 @@ def collisions_entite():
                 ennemis.pop(ennemis.index(goomba))
                 mario.vy = -25
                 score += 100
-                if temps_spawn >= 4000 :
+                if temps_spawn >= 4000:
                     temps_spawn -= 200
                 if temps_spawn >= 3000:
                     temps_spawn -= 100
@@ -297,7 +297,7 @@ def affiche_intro():
     fenetre.blit(titre, ((FENETRE_LARGEUR - titre_largeur) // 2, (FENETRE_HAUTEUR - titre_hauteur) // 4))
     message1 = police.render("[Q]uitter", True, BLANC)
     message1_largeur, message1_hauteur = police.size("[Q]uitter")
-    fenetre.blit(message1, ((FENETRE_LARGEUR - message1_largeur) // 2, 4 * FENETRE_HAUTEUR  // 5))
+    fenetre.blit(message1, ((FENETRE_LARGEUR - message1_largeur) // 2, 4 * FENETRE_HAUTEUR // 5))
     message2 = police.render("N'importe quelle touche pour commencer...", True, BLANC)
     message2_largeur, message2_hauteur = police.size("N'importe quelle touche pour commencer...")
     fenetre.blit(message2, ((FENETRE_LARGEUR - message2_largeur) // 2, 4 * FENETRE_HAUTEUR // 5 + 1.2 * message1_hauteur))
@@ -321,7 +321,7 @@ plateforme = pygame.transform.scale(plateforme, (25, 25))
 sol = pygame.image.load('images/brick2.png')
 sol = pygame.transform.scale(sol, (25, 25))
 
-map= [    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+map = [   [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
           [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
           [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
           [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
